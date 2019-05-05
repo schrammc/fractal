@@ -1,5 +1,7 @@
 # fractal
 
+![An example output](https://raw.githubusercontent.com/schrammc/fractal/master/img/example.png)
+
 This is some haskell code to play with fractal "coastline" generation as
 outlined by Benoit Mandelbrot.
 
