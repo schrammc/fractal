@@ -2,12 +2,12 @@
 
 ![An example output](https://raw.githubusercontent.com/schrammc/fractal/master/img/example.png)
 
-This is some haskell code to play with fractal "coastline" generation as
+This is some Haskell code to play with fractal "coastline" generation as
 outlined by Benoit Mandelbrot.
 
 ## How to run this
 
-This code uses is most conveniently used with the [haskell stack](https://www.haskellstack.org) build tool.
+This code is most conveniently used with the [Haskell Stack](https://www.haskellstack.org) build tool.
 
 Build with
 
