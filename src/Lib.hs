@@ -1,16 +1,13 @@
 {-# LANGUAGE MultiWayIf #-}
 module Lib
-    ( someFunc
+    ( chartSteps
     ) where
 
+import           Control.Monad.Random
 import qualified Data.Vector.Unboxed as VU
-import Linear
-import Control.Monad.Random
-import Graphics.Rendering.Chart.Easy
-import Graphics.Rendering.Chart.Backend.Cairo
-
-someFunc :: IO ()
-someFunc = chartSteps 7
+import           Graphics.Rendering.Chart.Backend.Cairo
+import           Graphics.Rendering.Chart.Easy
+import           Linear
 
 prepost :: V2 Double -> V2 Double
 prepost a = (1/3) *^ a
