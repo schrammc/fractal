@@ -62,5 +62,14 @@ chartSteps n = do
     plot (line "Points" [(0,0):(toDisplay $ head sts)])
   return ()
 
+-- | Affine vectors for a regular polygon with n sides. 
+regularN :: Int -> [V2 Double]
+regularN n
+  | n <= 2 = [V2 1 0]
+  | otherwise = do
+    k <- fromIntegral <$> [0 .. n]
+    let rotationAngle = 2*pi*(k/fromIntegral n)
+    return $ rotateV2 rotationAngle (V2 1 0)
+
 toDisplay :: VU.Vector (V2 Double) -> [(Double, Double)]
 toDisplay v = fmap (\(V2 a b) -> (a,b)) $ VU.toList $ VU.scanl1 (+) v 
