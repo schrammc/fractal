@@ -1,0 +1,69 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.1.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 2b908cbf4c3ad716bda1d341b05b58bd28032a3195ca272afe67d704f9d0be72
+
+name:           fractal
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/schrammc/fractal#readme>
+homepage:       https://github.com/schrammc/fractal#readme
+bug-reports:    https://github.com/schrammc/fractal/issues
+author:         Christof Schramm
+maintainer:     example@example.com
+copyright:      Christof Schramm 2019
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/fractal
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_fractal
+  hs-source-dirs:
+      src
+  build-depends:
+                base >=4.7 && <5,
+                vector,
+                linear,
+                MonadRandom,
+                Chart,
+                Chart-cairo,
+                transformers
+  default-language: Haskell2010
+
+executable fractal-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_fractal
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , fractal
+  default-language: Haskell2010
+
+test-suite fractal-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_fractal
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , fractal
+  default-language: Haskell2010
