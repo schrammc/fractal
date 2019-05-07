@@ -4,6 +4,7 @@ module Lib
     ) where
 
 import           Control.Monad.Random
+import           Control.Monad.Trans.State
 import qualified Data.Vector.Unboxed as VU
 import           Graphics.Rendering.Chart.Backend.Cairo
 import           Graphics.Rendering.Chart.Easy
@@ -25,20 +26,23 @@ rotateV2 angle v = mat !* v
     mat = V2 (V2 (cos angle) ((-1) * sin angle)) (V2 (sin angle) (cos angle))
 
 step :: MonadRandom m => VU.Vector (V2 Double) -> m (VU.Vector (V2 Double))
-step v = VU.fromList <$> build 0
+step v = evalStateT (VU.generateM n' build) Nothing
   where
     n = VU.length v
     n' = 4 * n
     build i =
-      if | i == n' -> return []
-         | i `mod` 4 == 0 || i `mod` 4 == 3 -> do
-             rest <- build $ i + 1
-             return $ (prepost $ (VU.!) v (i `div` 4)):rest
+      if | i `mod` 4 == 0 || i `mod` 4 == 3 -> do
+             return $ (prepost $ (VU.!) v (i `div` 4))
          | i `mod` 4 == 1 -> do
-             rest <- build $ i + 2
-             (a,b) <- insertRand $ (VU.!) v (i `div` 4)
-             return $ a:b:rest
-         | otherwise -> error "Impossible case"
+             (a,b) <- lift $ insertRand $ (VU.!) v (i `div` 4)
+             put $ Just b
+             return $ a
+         | i `mod` 4 == 2 -> do
+             xMaybe <- get
+             case xMaybe of
+               Nothing -> error "Impossible case (1)"
+               Just x -> put Nothing >> return x
+         | otherwise -> error "Impossible case (2)"
 
 steps :: MonadRandom m => Int -> m [(VU.Vector (V2 Double))]
 steps n
