@@ -6,6 +6,7 @@ module Lib
 import           Control.Monad.Random
 import           Control.Monad.Trans.State
 import qualified Data.Vector.Unboxed as VU
+import           Graphics.Rendering.Chart
 import           Graphics.Rendering.Chart.Backend.Cairo
 import           Graphics.Rendering.Chart.Easy
 import           Linear
@@ -60,10 +61,18 @@ chartSteps n = do
   sts <- evalRandIO $ steps n
 
   let fileOpts = FileOptions (1024,768) PDF
+      points = (0,0):(toDisplay $ head sts)
+      plot = toPlot
+             $ plot_lines_values .~ [points]
+             $ def
 
-  toFile fileOpts "fractal.pdf" $ do
-    layout_title .= "Fractal (" ++ show n ++ " levels)"
-    plot (line "Points" [(0,0):(toDisplay $ head sts)])
+  renderableToFile fileOpts "fractal.pdf"
+    $ toRenderable
+    $ layout_title .~ ("Fractal (" ++ show n ++ " levels)")
+    $ layout_plots .~ [plot]
+    $ layout_y_axis . laxis_generate .~ scaledAxis def ((-0.5),0.5)
+    $ layout_x_axis . laxis_generate .~ scaledAxis def (0,1)
+    $ def
   return ()
 
 -- | Affine vectors for a regular polygon with n sides. 
